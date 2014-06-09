@@ -1,0 +1,9 @@
+body {
+  margin-top: 5px;
+  padding-top: 5px;
+}
+.navbar-brand { font-size: bold;}
+#gps-details {
+  color: #8c8c8c;
+  font-style: italic;
+}
