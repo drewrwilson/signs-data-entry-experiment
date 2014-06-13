@@ -2,17 +2,23 @@ require 'rubygems'
 require 'sinatra'
 require 'haml'
 
+# configure :development do
+#     DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+# end
+#
+# configure :production do
+#     DataMapper.setup(:default, ENV['HEROKU_POSTGRESQL_RED_URL'])
+# end
+
 password = 'test'
 
 # Handle GET-request (Show the upload form)
 get "/upload" do
   haml :upload
-  #File.read(File.join('views', 'upload.html'))
 end
 
 get "/" do
   haml :index
-  #File.read(File.join('views', 'index.html'))
 end
 
 # Handle POST-request (Receive and save the uploaded file)
@@ -23,6 +29,6 @@ post "/upload" do
     end
     redirect '/?success=1'
   end
-  # else return wrong password:
+  # else return 'wrong password':
   return "Password wrong!"
 end
