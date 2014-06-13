@@ -2,6 +2,8 @@
   %head
     %title Photo of street sign
 
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1"}
+
     %link{:href => "https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css", :rel => "stylesheet"}
     %link{:href => "https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css", :rel => "stylesheet"}
     %link{:href => "css/style.css", :rel => "stylesheet"}
@@ -21,13 +23,17 @@
             #gps-details
           %p{:style => "padding:20px"}
             %form#form_id{:action => "/upload", :enctype => "multipart/form-data", :method => "post"}
-              %input{:accept => "image/*", :capture => "camera", :name => "myfile", :type => "file"}
+              %input{:accept => "image/*", :capture => "camera", :name => "photo-file", :type => "file"}
               %br
               %br
               %input{:name => "password", :placeholder => "password", :type => "text"}
+              %input{:name => "lat", :id => "lat", :type => "hidden"}
+              %input{:name => "long", :id => "long", :type => "hidden"}
+              %input{:name => "accuracy", :id => "accuracy", :type => "hidden"}
+
               %br
               %br
-              %input.btn.btn-lg.btn-primary{:name => "button", :type => "submit"}
+              %input.btn.btn-lg.btn-primary.hidden{:name => "button", :id => "submit-it", :type => "submit"}
 
     %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"}
     %script{:src => "https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"}

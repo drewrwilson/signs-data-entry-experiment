@@ -1,14 +1,15 @@
 require 'rubygems'
+require 'sequel'
 require 'sinatra'
+require 'uuid'
 require 'haml'
 
-# configure :development do
-#     DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
-# end
-#
-# configure :production do
-#     DataMapper.setup(:default, ENV['HEROKU_POSTGRESQL_RED_URL'])
-# end
+# connect to an in-memory database
+DB = Sequel.connect('sqlite://signs.db')
+submissions = DB[:submissions]
+
+uuid = UUID.new
+
 
 password = 'test'
 
@@ -23,10 +24,19 @@ end
 
 # Handle POST-request (Receive and save the uploaded file)
 post "/upload" do
-  if params['password'] == password
-    File.open('uploads/' + params['myfile'][:filename], "w") do |f|
-      f.write(params['myfile'][:tempfile].read)
+  if params['password'].downcase == password.downcase
+    image_id = uuid.generat
+    image_fname =  image_id + '.jpg'
+    File.open('uploads/' + image_fname, "w") do |f|
+      f.write(params['photo-file'][:tempfile].read)
     end
+    submissions.insert(
+      :lat => params['lat'],
+      :long => params['long'],
+      :accuracy => params['accuracy'],
+      :image_id => image_id,
+      :image_fname => image_fname
+      )
     redirect '/?success=1'
   end
   # else return 'wrong password':

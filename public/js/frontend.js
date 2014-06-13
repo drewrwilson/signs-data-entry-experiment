@@ -30,12 +30,19 @@
       } else {
         statusClass = 'danger';
       }
+      if (gps >= 85) {
+        $("#submit-it").removeClass('hidden');
+      }
       $('#gps-strength')
         .width(gps + '%')
         .removeClass()
         .addClass('progress-bar progress-bar-' + statusClass);
       $('#strength').html(gps + '%');
-      $('#gps-details').html("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude + ', Accuracy: '+ position.coords.accuracy);
+      $('#gps-details').html("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude + ', Accuracy within '+ position.coords.accuracy + 'm');
+      $('#lat').val(position.coords.latitude);
+      $('#long').val(position.coords.longitude);
+      $('#accuracy').val(position.coords.accuracy);
+
   }
 
   var iFrequency = 1000; // expressed in miliseconds
