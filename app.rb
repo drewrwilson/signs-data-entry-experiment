@@ -1,16 +1,27 @@
-require 'rubygems'
+require 'dotenv'
+Dotenv.load
+
+puts ENV
+
+require 'haml'
 require 'sequel'
 require 'sinatra'
 require 'uuid'
-require 'haml'
 
-# connect to an in-memory database
-DB = Sequel.connect('sqlite://signs.db')
+DB = Sequel.connect(ENV.fetch('DATABASE_URL'))
+
+DB.create_table?(:submissions) do
+  primary_key :id
+  Float :lat
+  Float :long
+  Int :accuracy
+  String :image_id
+  String :image_fname
+  DateTime :created_at
+end
+
 submissions = DB[:submissions]
-
 uuid = UUID.new
-
-
 password = 'test'
 
 # Handle GET-request (Show the upload form)
@@ -25,10 +36,12 @@ end
 # Handle POST-request (Receive and save the uploaded file)
 post "/upload" do
   if params['password'].downcase == password.downcase
-    image_id = uuid.generat
+    image_id = uuid.generate
     image_fname =  image_id + '.jpg'
-    File.open('uploads/' + image_fname, "w") do |f|
-      f.write(params['photo-file'][:tempfile].read)
+    if params.has_key?('photo-file')
+      File.open('uploads/' + image_fname, "w") do |f|
+        f.write(params['photo-file'][:tempfile].read)
+      end
     end
     submissions.insert(
       :lat => params['lat'],
